@@ -1,7 +1,5 @@
 package com.hungpham.ecommerce.controller;
 
-import com.hungpham.ecommerce.exception.BusinessException;
-import com.hungpham.ecommerce.exception.ErrorCode;
 import com.hungpham.ecommerce.model.entity.Product;
 import com.hungpham.ecommerce.service.impl.ProductService;
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -26,20 +24,12 @@ public class ProductController {
 
     @PostMapping
     public Product create(@RequestBody Product product) {
-        log.info("\n------- name:" + product.getName());
-        Product saved = productService.create(product);
-        return saved;
+        return productService.create(product);
     }
 
-    @GetMapping("/{id}")
-    public Product findById(@PathVariable Integer id) {
-        Optional<Product> optionalProduct = productService.findById(id);
-        optionalProduct.orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND_ERROR));
-        return optionalProduct.get();
-    }
-
-    @GetMapping
-    public Iterable<Product> find() {
-        return productService.findAll();
+    @GetMapping("/{name}")
+    public List<Product> findById(@PathVariable String name) {
+        List<Product> products = productService.findByName(name);
+        return products;
     }
 }

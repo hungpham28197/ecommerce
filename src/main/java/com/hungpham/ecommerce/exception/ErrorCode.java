@@ -9,4 +9,7 @@ public interface ErrorCode {
 
     BusinessErrorCode INPUT_DATA_FORMAT_ERROR =
             new BusinessErrorCode("ECOMMERCE-1001", "Input Data Input Format Error", 404);
+
+    BusinessErrorCode ITEM_NOT_FOUND_ERROR =
+            new BusinessErrorCode("ECOMMERCE-1002", "Item Not Found Error", 404);
 }

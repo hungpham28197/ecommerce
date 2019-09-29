@@ -1,18 +1,17 @@
 package com.hungpham.ecommerce.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hungpham.ecommerce.model.enums.Gender;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-
-import static javax.persistence.EnumType.STRING;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @TypeDefs({
         @TypeDef(name = "json", typeClass = JsonStringType.class),
@@ -20,25 +19,21 @@ import static javax.persistence.EnumType.STRING;
 })
 @Entity
 @Table(name = "Product")
-public class Product {
+public class Product implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
     private String name;
     private boolean status;
-    @Type(type = "json")
-    @Column(name = "version", columnDefinition = "json")
-    private Version version;
-    @Enumerated(value = STRING)
-    private Gender gender;
 
-    private LocalDate birthDay;
+    @OneToMany(mappedBy = "product")
+    private List<Item> items = new ArrayList<>();
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,7 +41,6 @@ public class Product {
         return name;
     }
 
-    @JsonProperty("name_abc")
     public void setName(String name) {
         this.name = name;
     }
@@ -59,28 +53,21 @@ public class Product {
         this.status = status;
     }
 
-    public Version getVersion() {
-        return version;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setVersion(Version version) {
-        this.version = version;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public LocalDate getBirthDay() {
-        return birthDay;
-    }
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    public void setBirthDay(LocalDate birthDay) {
-        this.birthDay = birthDay;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", items=" + items +
+                '}';
     }
 }

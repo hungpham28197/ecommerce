@@ -25,7 +25,7 @@ spring:
     platform: mysql
     url: jdbc:mysql://localhost:3306/ecommerce?useSSL=false&useUnicode=yes&characterEncoding=UTF-8
     username: root
-    password: hungiang
+    password: Giang@281
   database:
     driverClasName: com.mysql.jdbc.Driver
 
