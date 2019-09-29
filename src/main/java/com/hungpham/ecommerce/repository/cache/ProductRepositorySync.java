@@ -7,7 +7,6 @@ import com.hungpham.ecommerce.model.entity.Product;
 import com.hungpham.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -28,8 +27,9 @@ public class ProductRepositorySync implements RepositorySync<Product, Integer> {
     public <S extends Product> S save(S var1) {
         CompletableFuture.supplyAsync(() -> {
             var1.setId(UUID.randomUUID().toString());
-            ValueOperations<String, Product> values = redisTemplate.opsForValue();
-            values.set("ec_product_" + var1.getId() + "_" + var1.getName(), var1);
+//            ValueOperations<String, Product> values = redisTemplate.opsForValue();
+//            values.set("ec_product_" + var1.getId() + "_" + var1.getName(), var1);
+            redisTemplate.opsForZSet().add("ec_product", var1, var1.getScore());
             return var1;
         }).thenAccept(saved -> {
             Command<Product, ProductRepository> command = new Command<>();

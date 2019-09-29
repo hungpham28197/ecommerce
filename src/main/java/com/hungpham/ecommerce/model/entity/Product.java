@@ -25,6 +25,7 @@ public class Product implements Serializable {
     private String id;
     private String name;
     private boolean status;
+    private int score;
 
     @OneToMany(mappedBy = "product")
     private List<Item> items = new ArrayList<>();
@@ -59,6 +60,14 @@ public class Product implements Serializable {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     @Override
